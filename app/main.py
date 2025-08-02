@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Depends, HTTPException, Query, Header
 from sqlalchemy.orm import Session
 from geopy.distance import geodesic
-from .database import get_db, create_tables
-from .models import Organization as OrganizationModel, Building as BuildingModel, Activity as ActivityModel, \
+from database import get_db, create_tables
+from models import Organization as OrganizationModel, Building as BuildingModel, Activity as ActivityModel, \
     Phone as PhoneModel
-from .schemas import Organization as OrganizationSchema, OrganizationCreate, PhoneBase, Activity as ActivitySchema, \
+from schemas import Organization as OrganizationSchema, OrganizationCreate, PhoneBase, Activity as ActivitySchema, \
     Building as BuildingSchema
-from .seed_data import seed_database
+from seed_data import seed_database
 import os
 
 app = FastAPI(
@@ -29,9 +29,9 @@ def startup_event():
     db = next(get_db())
     try:
         seed_database(db)
-        print("✅ Database seeded successfully")
+        print("Database seeded successfully")
     except Exception as e:
-        print(f"❌ Error seeding database: {str(e)}")
+        print(f"Error seeding database: {str(e)}")
     finally:
         db.close()
 
@@ -90,9 +90,9 @@ def get_orgs_by_activity(
          description="Поиск организаций в заданном радиусе от указанной точки",
          tags=["Организации"])
 def get_orgs_in_radius(
-        lat: float = Query(..., description="Широта центра", example=55.755826),
-        lon: float = Query(..., description="Долгота центра", example=37.617300),
-        radius: float = Query(1000, description="Радиус в метрах", example=500),
+        lat: float = Query(..., description="Широта центра", examples=55.755826),
+        lon: float = Query(..., description="Долгота центра", examples=37.617300),
+        radius: float = Query(1000, description="Радиус в метрах", examples=500),
         db: Session = Depends(get_db),
         _: bool = Depends(verify_api_key)
 ):
@@ -140,7 +140,7 @@ def get_organization(
          description="Поиск организаций по виду деятельности с учетом иерархии",
          tags=["Поиск"])
 def search_orgs_by_activity_tree(
-        activity_name: str = Query(..., description="Название вида деятельности", example="Еда"),
+        activity_name: str = Query(..., description="Название вида деятельности", examples="Еда"),
         db: Session = Depends(get_db),
         _: bool = Depends(verify_api_key)
 ):
@@ -186,7 +186,7 @@ def get_all_children_ids(db: Session, activity_id: int, level=1, max_level=3):
          description="Поиск организаций по части названия",
          tags=["Поиск"])
 def search_orgs_by_name(
-        name: str = Query(..., description="Часть названия организации", example="Рога"),
+        name: str = Query(..., description="Часть названия организации", examples="Рога"),
         db: Session = Depends(get_db),
         _: bool = Depends(verify_api_key)
 ):
