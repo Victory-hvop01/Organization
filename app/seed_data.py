@@ -48,4 +48,4 @@ def seed_database(db: Session):
         org1, org2
     ])
     db.commit()
-    print("✅ Test data seeded successfully")
+    print("Test data seeded successfully")
