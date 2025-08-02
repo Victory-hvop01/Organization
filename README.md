@@ -26,8 +26,7 @@ REST API для управления справочником организац
 ### Шаги установки
 ```bash
 # Клонировать репозиторий
-git clone https://github.com/ваш-username/company-directory.git
-cd company-directory
+git clone https://github.com/Victory-hvop01/Organization.git
 
 # Создать и активировать виртуальное окружение
 python -m venv venv
